@@ -99,5 +99,11 @@ const FilterMessages = {
   'Past': 'There are no past events now'
 };
 
+const Mode = {
+  DEFAULT: 'default',
+  EDIT: 'edit'
+};
+
 export { CITIES, DESCRIPTION, EMPTY_POINT, OFFERS_TITLE, PointsCount, POINT_TYPE, MS_IN_DAY,
-  MS_IN_HOUR, Price, Duration, DateFormat, PicturesCount, CountOffers, FILTERS, FilterMessages, SORTS };
+  MS_IN_HOUR, Price, Duration, DateFormat, PicturesCount, CountOffers, FILTERS, FilterMessages, SORTS,
+  Mode };
