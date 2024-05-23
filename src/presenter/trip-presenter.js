@@ -56,9 +56,9 @@ export default class TripPresenter {
       this.#points), tripInfoElement, RenderPosition.AFTERBEGIN);
   }
 
-  #destroyPointPresenters() {
-    this.#pointPresenters.forEach((pp) => {
-      pp.destroy();
+  #removePointPresenters() {
+    this.#pointPresenters.forEach((point) => {
+      point.removeComponent();
     });
 
     this.#pointPresenters = new Map();
@@ -70,7 +70,7 @@ export default class TripPresenter {
 
       sort[this.#currentSortType](this.#points);
 
-      this.#destroyPointPresenters();
+      this.#removePointPresenters();
       this.#renderPoints();
     }
   };
@@ -104,13 +104,13 @@ export default class TripPresenter {
     render(new EmptyListView(filter), this.#eventListComponent.element);
   }
 
+  #modeChangeHandler = () => {
+    this.#pointPresenters.forEach((point) => point.resetView());
+  };
+
   #pointChangeHandler = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  };
-
-  #modeChangeHandler = () => {
-    this.#pointPresenters.forEach((point) => point.resetView());
   };
 
   init() {
