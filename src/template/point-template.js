@@ -1,4 +1,4 @@
-import { formatToShortDate, getDuration, formatToShortTime } from '../util.js';
+import { formatToShortDate, getDuration, formatToShortTime } from '../utils/time-utils.js';
 
 const createFavoriteButtonTemplate = (isFavorite) => `
   <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
