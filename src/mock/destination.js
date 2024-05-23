@@ -1,4 +1,4 @@
-import { getRandomElement, getRandomInt } from '../util.js';
+import { getRandomElement, getRandomInt } from '../utils/utils.js';
 import { CITIES, DESCRIPTION, PicturesCount } from '../const.js';
 
 const generateDestinations = () => CITIES.map((city) => (

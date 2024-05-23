@@ -1,4 +1,4 @@
-const CITIES = [
+export const CITIES = [
   'Paris',
   'Toronto',
   'Leipzig',
@@ -8,7 +8,7 @@ const CITIES = [
   'Milan'
 ];
 
-const DESCRIPTION = [
+export const DESCRIPTION = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',
@@ -22,33 +22,33 @@ const DESCRIPTION = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
-const Price = {
+export const Price = {
   MIN: 1,
   MAX: 1000
 };
 
-const Duration = {
+export const Duration = {
   HOUR: 5,
   DAY: 5,
   MIN: 59
 };
 
-const DateFormat = {
+export const DateFormat = {
   LONG: 'YYYY-MM-DDTHH:mm',
   SHORT: 'MMM DD'
 };
 
-const PicturesCount = {
+export const PicturesCount = {
   MIN: 0,
   MAX: 5
 };
 
-const CountOffers = {
+export const CountOffers = {
   MIN: 1,
   MAX: 5
 };
 
-const POINT_TYPE = [
+export const POINT_TYPE = [
   'Taxi',
   'Bus',
   'Train',
@@ -60,7 +60,7 @@ const POINT_TYPE = [
   'Restaurant'
 ];
 
-const EMPTY_POINT = {
+export const EMPTY_POINT = {
   basePrice: 0,
   dateFrom: null,
   dateTo: null,
@@ -70,7 +70,7 @@ const EMPTY_POINT = {
   type: 'flight'
 };
 
-const OFFERS_TITLE = [
+export const OFFERS_TITLE = [
   'Upgrade to a business class',
   'Add luggage',
   'Add meal',
@@ -78,32 +78,34 @@ const OFFERS_TITLE = [
   'Travel by train'
 ];
 
-const PointsCount = {
+export const PointsCount = {
   MIN: 0,
   MAX: 4
 };
 
 
-const MS_IN_DAY = 86400000;
+export const MS_IN_DAY = 86400000;
 
-const MS_IN_HOUR = 3600000;
+export const MS_IN_HOUR = 3600000;
 
-const FILTERS = ['Everything', 'Future', 'Present', 'Past'];
+export const FILTERS = ['Everything', 'Future', 'Present', 'Past'];
 
-const SORTS = ['Day', 'Event', 'Time', 'Price', 'Offers'];
+export const Sorts = {
+  DAY: 'Day',
+  EVENT: 'Event',
+  TIME: 'Time',
+  PRICE: 'Price',
+  OFFERS: 'Offers'
+};
 
-const FilterMessages = {
+export const FilterMessages = {
   'Everything': 'Click New Event to create your first point',
   'Future': 'There are no future events now',
   'Present': 'There are no present events now',
   'Past': 'There are no past events now'
 };
 
-const Mode = {
+export const Mode = {
   DEFAULT: 'default',
   EDIT: 'edit'
 };
-
-export { CITIES, DESCRIPTION, EMPTY_POINT, OFFERS_TITLE, PointsCount, POINT_TYPE, MS_IN_DAY,
-  MS_IN_HOUR, Price, Duration, DateFormat, PicturesCount, CountOffers, FILTERS, FilterMessages, SORTS,
-  Mode };
