@@ -48,17 +48,17 @@ export const CountOffers = {
   MAX: 5
 };
 
-export const POINT_TYPE = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-in',
-  'Sightseeing',
-  'Restaurant'
-];
+export const POINT_TYPE = {
+  TAXI: 'Taxi',
+  BUS: 'Bus',
+  TRAIN: 'Train',
+  SHIP: 'Ship',
+  DRIVE: 'Drive',
+  FLIGHT: 'Flight',
+  CHECK_IN: 'Check-in',
+  SIGHTSEEING: 'Sightseeing',
+  RESTAURANT: 'Restaurant'
+};
 
 export const EMPTY_POINT = {
   basePrice: 0,
