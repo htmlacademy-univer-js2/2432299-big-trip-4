@@ -9,29 +9,28 @@ import SortPresenter from './sort-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
 import { getRandomElement, updateItem } from '../utils/utils.js';
 import { sort } from '../utils/sort-utils.js';
+
 import { FILTERS, Sorts } from '../const.js';
 
-const bodyElement = document.querySelector('body');
+const bodyElement = document.body;
 const headerElement = bodyElement.querySelector('.page-header');
 const tripInfoElement = headerElement.querySelector('.trip-main');
 const filterElement = tripInfoElement.querySelector('.trip-controls__filters');
 
 export default class TripPresenter {
   #eventListComponent = new EventListView();
+  #pointPresenters = new Map();
+  #currentSortType = Sorts.DAY;
 
   #container = null;
   #destinationsModel = null;
   #offersModel = null;
   #points = null;
 
-  #pointPresenters = new Map();
-  #currentSortType = Sorts.DAY;
-
   constructor(container, destinationsModel, offersModel, pointsModel) {
     this.#container = container;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
-
     this.#points = sort[Sorts.DAY]([...pointsModel.get()]);
   }
 
@@ -57,9 +56,9 @@ export default class TripPresenter {
       this.#points), tripInfoElement, RenderPosition.AFTERBEGIN);
   }
 
-  #removePointPresenters() {
-    this.#pointPresenters.forEach((point) => {
-      point.removeComponent();
+  #destroyPointPresenters() {
+    this.#pointPresenters.forEach((pp) => {
+      pp.removeComponent();
     });
 
     this.#pointPresenters = new Map();
@@ -71,7 +70,7 @@ export default class TripPresenter {
 
       sort[this.#currentSortType](this.#points);
 
-      this.#removePointPresenters();
+      this.#destroyPointPresenters();
       this.#renderPoints();
     }
   };
@@ -105,13 +104,13 @@ export default class TripPresenter {
     render(new EmptyListView(filter), this.#eventListComponent.element);
   }
 
-  #modeChangeHandler = () => {
-    this.#pointPresenters.forEach((point) => point.resetView());
-  };
-
   #pointChangeHandler = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  #modeChangeHandler = () => {
+    this.#pointPresenters.forEach((point) => point.resetView());
   };
 
   init() {

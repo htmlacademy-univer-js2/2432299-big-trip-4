@@ -15,3 +15,5 @@ export const sort = {
   [Sorts.TIME]: (array) => array.sort(sortByTime),
   [Sorts.PRICE]: (array) => array.sort(sortByPrice)
 };
+
+export const isSortTypeAllowed = (type) => !(type === Sorts.EVENT || type === Sorts.OFFERS);
