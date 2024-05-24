@@ -5,7 +5,10 @@ export const CITIES = [
   'Moscow',
   'Hongkong',
   'Tokyo',
-  'Milan'
+  'Milan',
+  'Cologne',
+  'Liverpool',
+  'Warsaw'
 ];
 
 export const DESCRIPTION = [
@@ -43,12 +46,17 @@ export const PicturesCount = {
   MAX: 5
 };
 
-export const CountOffers = {
+export const OffersCount = {
   MIN: 1,
   MAX: 5
 };
 
-export const POINT_TYPE = {
+export const PointsCount = {
+  MIN: 0,
+  MAX: 4
+};
+
+export const PointType = {
   TAXI: 'Taxi',
   BUS: 'Bus',
   TRAIN: 'Train',
@@ -60,7 +68,7 @@ export const POINT_TYPE = {
   RESTAURANT: 'Restaurant'
 };
 
-export const EMPTY_POINT = {
+export const EmptyPoint = {
   basePrice: 0,
   dateFrom: null,
   dateTo: null,
@@ -77,12 +85,6 @@ export const OFFERS_TITLE = [
   'Choose seats',
   'Travel by train'
 ];
-
-export const PointsCount = {
-  MIN: 0,
-  MAX: 4
-};
-
 
 export const MS_IN_DAY = 86400000;
 

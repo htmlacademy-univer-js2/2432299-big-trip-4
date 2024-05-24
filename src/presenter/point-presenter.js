@@ -4,14 +4,15 @@ import PointView from '../view/point-view.js';
 import { Mode } from '../const.js';
 
 import { render, replace, remove } from '../framework/render.js';
+
 import { isEscapeKey } from '../utils/utils.js';
 
 export default class PointPresenter {
-
   #mode = Mode.DEFAULT;
 
   #destinationsModel = null;
   #offersModel = null;
+
   #point = null;
 
   #pointChangeHandler = null;
@@ -23,9 +24,12 @@ export default class PointPresenter {
   #prevPointComponent = null;
   #prevPointEditComponent = null;
 
-  constructor(destinationsModel, offersModel, eventListComponent, pointChangeHandler, modeChangeHandler) {
+  constructor(
+    destinationsModel, offersModel, eventListComponent, pointChangeHandler, modeChangeHandler
+  ) {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+
     this.#eventListComponent = eventListComponent;
 
     this.#pointChangeHandler = pointChangeHandler;
@@ -55,16 +59,16 @@ export default class PointPresenter {
     document.addEventListener('keydown', this.#onKeyDown);
   };
 
-  #onSubmitForm = (point) => {
+  #onFormSubmitClick = (point) => {
     this.#replaceFormToPoint();
     this.#pointChangeHandler({...point, isFavorite: !point.isFavorite});
   };
 
-  #onRollupButtonClick = () => {
+  #onRollupClick = () => {
     this.#replacePointToForm();
   };
 
-  #onResetButtonClick = () => {
+  #onResetClick = () => {
     this.#replaceFormToPoint();
   };
 
@@ -72,27 +76,24 @@ export default class PointPresenter {
     this.#prevPointComponent = this.#pointComponent;
     this.#prevPointEditComponent = this.#pointEditComponent;
 
-    const onFavoriteButtonCLick = () => this.#pointChangeHandler({...point, isFavorite: !point.isFavorite});
+    const onFavoriteCLick = () => this.#pointChangeHandler({...point, isFavorite: !point.isFavorite});
 
     this.#pointComponent = new PointView(
       point,
       destination,
       offers,
-      this.#onRollupButtonClick,
-      onFavoriteButtonCLick);
+      this.#onRollupClick,
+      onFavoriteCLick);
 
     this.#pointEditComponent = new PointEditView(
       point,
-      destination,
-      offers,
-      this.#onResetButtonClick,
-      this.#onSubmitForm,
+      this.#onResetClick,
+      this.#onFormSubmitClick,
       this.#destinationsModel,
-      this.#offersModel);
+      this.#offersModel,);
 
     if (!(this.#prevPointComponent && this.#prevPointEditComponent)) {
       render(this.#pointComponent, this.#eventListComponent.element);
-
       return;
     }
 
@@ -110,7 +111,7 @@ export default class PointPresenter {
 
   resetView = () => {
     if (this.#mode === Mode.EDIT) {
-      this.#onResetButtonClick();
+      this.#onResetClick();
     }
   };
 

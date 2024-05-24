@@ -1,4 +1,5 @@
 import { Duration, DateFormat, MS_IN_HOUR, MS_IN_DAY} from '../const.js';
+
 import { getRandomInt } from './utils.js';
 import dayjs from 'dayjs';
 
@@ -21,11 +22,7 @@ export const getDate = (add) => {
   const days = getRandomInt(0, Duration.DAY);
 
   if (add) {
-    date = dayjs(date)
-      .add(mins, 'minute')
-      .add(hours, 'hour')
-      .add(days, 'days')
-      .toDate();
+    date = dayjs(date).add(mins, 'minute').add(hours, 'hour').add(days, 'days').toDate();
   }
 
   return date;

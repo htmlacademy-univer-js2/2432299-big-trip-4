@@ -1,4 +1,5 @@
 import { getRandomElement, getRandomInt } from '../utils/utils.js';
+
 import { OFFERS_TITLE, Price } from '../const.js';
 
 const generateOffer = () => ({

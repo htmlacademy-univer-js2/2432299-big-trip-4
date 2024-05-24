@@ -1,10 +1,18 @@
-import { POINT_TYPE, CITIES } from '../const.js';
+import { PointType, CITIES } from '../const.js';
 
 const createPicturesTemplate = (pictures) => {
   let result = '';
 
-  for (let i = 0; i < pictures.length; i++) {
-    result += `<img class="event__photo" src=${pictures[i].src} alt="Event photo">`;
+  if (pictures.length) {
+    pictures.forEach((picture) => (result += `<img class="event__photo" src=${picture.src} alt="Event photo">`));
+
+    return `
+    <div class="event__photos-container">
+      <div class="event__photos-tape">
+        ${result}
+      </div>
+    </div>
+    `;
   }
 
   return result;
@@ -12,14 +20,16 @@ const createPicturesTemplate = (pictures) => {
 
 const createEventTypeTemplate = () => {
   let result = '';
-  let typeL = '';
 
-  Object.values(POINT_TYPE).forEach((type, index) => {
-    typeL = type.toLowerCase();
-    result += `<div class="event__type-item">
-    <input id="event-type-${typeL}-${index + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
-    <label class="event__type-label  event__type-label--${typeL}" for="event-type-${typeL}-${index + 1}">${type}</label>
-  </div>`;
+  Object.values(PointType).forEach((type, index) => {
+    const lowerCaseTypeName = type.toLowerCase();
+
+    result += `
+      <div class="event__type-item">
+        <input id="event-type-${lowerCaseTypeName}-${index + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+        <label label class="event__type-label  event__type-label--${lowerCaseTypeName}" for="event-type-${lowerCaseTypeName}-${index + 1}">${type}</label>
+      </div>
+      `;
   });
 
   return result;
@@ -28,9 +38,7 @@ const createEventTypeTemplate = () => {
 const createDestinationList = () => {
   let result = '';
 
-  for (let i = 0; i < CITIES.length; i++) {
-    result += `<option value="${CITIES[i].name}"></option>`;
-  }
+  CITIES.forEach((city) => (result += `<option value="${city.name}"></option>`));
 
   return result;
 };
@@ -38,23 +46,23 @@ const createDestinationList = () => {
 const createOffersTemplate = (offers) => {
   let result = '';
 
-  for (let i = 0; i < offers.length; i++) {
+  offers.forEach((offer, index) => {
     result += `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${i + 1}" type="checkbox" name="event-offer-luggage" checked>
-    <label class="event__offer-label" for="event-offer-luggage-${i + 1}">
-      <span class="event__offer-title">${offers[i].title}</span>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index + 1}" type="checkbox" name="event-offer-luggage" checked>
+    <label class="event__offer-label" for="event-offer-luggage-${index + 1}">
+      <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offers[i].price}</span>
+      <span class="event__offer-price">${offer.price}</span>
     </label>
   </div>`;
-  }
+  });
 
   return result;
 };
 
 const createPointEditTemplate = (point, destination, offers) => `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
-    <header class=" event__header">
+    <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
@@ -93,7 +101,7 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${point.basePrice}" ${point.basePrice}>
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -114,12 +122,7 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destination.description}</p>
-
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-            ${createPicturesTemplate(destination.pictures)}
-          </div>
-        </div>
+        ${createPicturesTemplate(destination.pictures)}
       </section>
     </section>
   </form>

@@ -1,55 +1,59 @@
-import { createPointEditTemplate } from '../template/point-edit-template.js';
-import { EMPTY_POINT } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+
+import flatpickr from 'flatpickr';
+
+import { createPointEditTemplate } from '../template/point-edit-template.js';
+
+import { EmptyPoint } from '../const.js';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 export default class PointEditView extends AbstractStatefulView {
   #point = null;
   #pointDestination = null;
   #pointOffers = null;
-  #onSubmit = null;
-  #onCloseButtonClick = null;
-
-  #onResetClick = null;
-  #onFormSubmit = null;
-
+  #resetClickHandler = null;
+  #formSubmitHandler = null;
   #destinationsModel = null;
   #offersModel = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
 
-  #currentType = null;
-
-  constructor(point = EMPTY_POINT, pointDestination, pointOffers, onResetButtonClick, onFormSubmit, destinationsModel, offersModel) {
+  constructor(point = EmptyPoint, resetClickHandler, formSubmitHandler, destinationsModel, offersModel) {
     super();
-    this.#point = point;
-    this.#pointDestination = pointDestination;
-    this.#pointOffers = pointOffers;
 
-    this.#onResetClick = onResetButtonClick;
-    this.#onFormSubmit = onFormSubmit;
+    this.#point = point;
+
+    this.#resetClickHandler = resetClickHandler;
+    this.#formSubmitHandler = formSubmitHandler;
 
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+
+    this.#pointDestination = destinationsModel.getById(point.destination);
+    this.#pointOffers = this.#offersModel.getByType(point.type);
 
     this._setState({point: point});
     this._restoreHandlers();
   }
 
-  #typeChangeHandler = (evt) => {
-    this.#currentType = evt.target.value;
-    this.#pointOffers = this.#offersModel.getByType(this.#currentType);
+  #onTypeChange = (evt) => {
+    const type = evt.target.value;
+    this.#pointOffers = this.#offersModel.getByType(type);
 
     const offersIds = this.#pointOffers.map((offer) => offer.id);
 
     this.updateElement({ point: {
       ...this._state.point,
-      type: this.#currentType,
+      type: type,
       offers: offersIds}
     });
   };
 
-  #destinationChangeHandler = (evt) => {
+  #onDestinationChange = (evt) => {
     evt.preventDefault();
 
-    this.#pointDestination = this.#destinationsModel.get().find((destination) => destination.name === evt.target.value);
+    this.#pointDestination = this.#destinationsModel.getByName(evt.target.value);
 
     if (this.#pointDestination) {
       this.updateElement({point:{
@@ -59,7 +63,7 @@ export default class PointEditView extends AbstractStatefulView {
     }
   };
 
-  #offerChangeHandler = () => {
+  #onOfferChange = () => {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox'));
 
     this._setState({
@@ -70,55 +74,111 @@ export default class PointEditView extends AbstractStatefulView {
     });
   };
 
-  #priceChangeHandler = (evt) => {
+  #onPriceChange = (evt) => {
     this._setState({
       point: {
         ...this._state.point,
-        basePrice: evt.target.valueAsNumber
+        basePrice: evt.target.value
       }
     });
   };
 
-  #handleResetClick = () => {
+  #onResetClick = () => {
     this.updateElement({ point: this.#point });
-    this.#onResetClick();
+    this.#resetClickHandler();
   };
 
-  #handleSaveClick = (evt) => {
+  #onFormSubmit = (evt) => {
     evt.preventDefault();
     this.#point = this._state.point;
-    this.#onFormSubmit({...this.#point});
+    this.#formSubmitHandler({...this.#point});
+  };
+
+  #dateFromCloseHandler = ([userDate]) => {
+    this._setState({
+      point: {
+        ...this._state.point,
+        dateFrom: userDate
+      }
+    });
+
+    this.#datepickerTo.set('minDate', this._state.point.dateFrom);
+  };
+
+  #dateToCloseHandler = ([userDate]) => {
+    this._setState({
+      point: {
+        ...this._state.point,
+        dateTo: userDate
+      }
+    });
+
+    this.#datepickerFrom.set('minDate', this._state.point.dateTo);
+  };
+
+  #setDatepickers = () => {
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
+    const commonConfig = {
+      dateFormat: 'd/m/y H:i',
+      enableTime: true,
+      locale: {
+        firstDayDfWeek: 1,
+      },
+      'time_24hr': true
+    };
+
+    this.#datepickerFrom = flatpickr(
+      dateFromElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.point.dateFrom,
+        onClose: this.#dateFromCloseHandler,
+        maxDate: this._state.point.dateTo
+      }
+    );
+
+    this.#datepickerTo = flatpickr(
+      dateToElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.point.dateTo,
+        onClose: this.#dateToCloseHandler,
+        minDate: this._state.point.dateFrom
+      }
+    );
   };
 
   _restoreHandlers = () => {
     this.element
       .querySelector('.event__reset-btn')
-      .addEventListener('click', this.#handleResetClick);
+      .addEventListener('click', this.#onResetClick);
 
     this.element
       .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#handleResetClick);
+      .addEventListener('click', this.#onResetClick);
 
     this.element
       .querySelector('form')
-      .addEventListener('submit', this.#handleSaveClick);
+      .addEventListener('submit', this. #onFormSubmit);
 
     this.element
       .querySelectorAll('.event__type-input')
       .forEach((eventType) => eventType
-        .addEventListener('change', this.#typeChangeHandler));
+        .addEventListener('change', this.#onTypeChange));
 
     this.element
       .querySelector('.event__input')
-      .addEventListener('change', this.#destinationChangeHandler);
+      .addEventListener('change', this.#onDestinationChange);
 
     this.element
       .querySelector('.event__input--price')
-      .addEventListener('change', this.#priceChangeHandler);
+      .addEventListener('change', this.#onPriceChange);
 
     this.element
       .querySelector('.event__available-offers')
-      .addEventListener('change', this.#offerChangeHandler);
+      .addEventListener('change', this.#onOfferChange);
+
+    this.#setDatepickers();
   };
 
   get template() {
