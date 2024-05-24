@@ -14,13 +14,13 @@ const createEventTypeTemplate = () => {
   let result = '';
   let typeL = '';
 
-  for (let i = 0; i < POINT_TYPE.length; i++) {
-    typeL = POINT_TYPE[i].toLowerCase();
+  Object.values(POINT_TYPE).forEach((type, index) => {
+    typeL = type.toLowerCase();
     result += `<div class="event__type-item">
-    <input id="event-type-${typeL}-${i + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeL}">
-    <label class="event__type-label  event__type-label--${typeL}" for="event-type-${typeL}-${i + 1}">${POINT_TYPE[i]}</label>
+    <input id="event-type-${typeL}-${index + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+    <label class="event__type-label  event__type-label--${typeL}" for="event-type-${typeL}-${index + 1}">${type}</label>
   </div>`;
-  }
+  });
 
   return result;
 };
@@ -98,6 +98,9 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
