@@ -1,25 +1,27 @@
-import { FILTERS } from '../const.js';
+import { Filters } from '../const.js';
 
-const createFilterTemplate = (activeFilter) => {
-  let result = '';
+const createFilterElements = (currentFilterType) => {
+  let template = '';
 
-  FILTERS.forEach((filter) => {
-    const check = activeFilter === filter ? 'checked' : 'disabled';
+  Object.values(Filters).forEach((filter) => {
+    const checked = filter === currentFilterType ? 'checked' : '';
+    const lowerCaseFilterName = filter.toLowerCase();
 
-    result += `
-      <div class="trip-filters__filter">
-        <input id="filter-${filter.toLowerCase()}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filter.toLowerCase()}" ${check}>
-        <label class="trip-filters__filter-label" for="filter-${filter.toLowerCase()}">${filter}</label>
-      </div>
-      `;
+    template += `<div class="trip-filters__filter">
+        <input id="filter-${lowerCaseFilterName}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter"
+        value="${lowerCaseFilterName}" ${checked}>
+        <label class="trip-filters__filter-label" for="filter-${lowerCaseFilterName}">${filter}</label>
+        </div>`;
   });
 
-  return `
-    <form class="trip-filters" action="#" method="get">
-      ${result}
-      <button class="visually-hidden" type="submit">Accept filter</button>
-    </form>
-    `;
+  return template;
 };
 
-export { createFilterTemplate };
+const createFiltersTemplate = (currentFilterType) => (
+  `<form class="trip-filters" action="#" method="get">
+      ${createFilterElements(currentFilterType)}
+      <button class="visually-hidden" type="submit">Accept filter</button>
+     </form>`
+);
+
+export { createFiltersTemplate };

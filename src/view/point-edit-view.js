@@ -4,34 +4,33 @@ import flatpickr from 'flatpickr';
 
 import { createPointEditTemplate } from '../template/point-edit-template.js';
 
-import { EmptyPoint } from '../const.js';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class PointEditView extends AbstractStatefulView {
   #point = null;
+  #destinations = null;
+  #offers = null;
   #pointDestination = null;
   #pointOffers = null;
   #resetClickHandler = null;
   #formSubmitHandler = null;
-  #destinationsModel = null;
-  #offersModel = null;
+  #deleteClickHandler = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor(point = EmptyPoint, resetClickHandler, formSubmitHandler, destinationsModel, offersModel) {
+  constructor(point, destinations, offers, resetClickHandler, formSubmitHandler, deleteClickHandler) {
     super();
 
     this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
 
     this.#resetClickHandler = resetClickHandler;
     this.#formSubmitHandler = formSubmitHandler;
+    this.#deleteClickHandler = deleteClickHandler;
 
-    this.#destinationsModel = destinationsModel;
-    this.#offersModel = offersModel;
-
-    this.#pointDestination = destinationsModel.getById(point.destination);
-    this.#pointOffers = this.#offersModel.getByType(point.type);
+    this.#pointDestination = destinations.find((dest) => dest.id === point.destination);
+    this.#pointOffers = offers.find((offer) => offer.type === point.type).offers;
 
     this._setState({point: point});
     this._restoreHandlers();
@@ -39,7 +38,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   #onTypeChange = (evt) => {
     const type = evt.target.value;
-    this.#pointOffers = this.#offersModel.getByType(type);
+    this.#pointOffers = this.#offers.find((offer) => offer.type === type).offers;
 
     const offersIds = this.#pointOffers.map((offer) => offer.id);
 
@@ -53,7 +52,7 @@ export default class PointEditView extends AbstractStatefulView {
   #onDestinationChange = (evt) => {
     evt.preventDefault();
 
-    this.#pointDestination = this.#destinationsModel.getByName(evt.target.value);
+    this.#pointDestination = this.#destinations.find((dest) => dest.name === evt.target.value);
 
     if (this.#pointDestination) {
       this.updateElement({point:{
@@ -88,10 +87,14 @@ export default class PointEditView extends AbstractStatefulView {
     this.#resetClickHandler();
   };
 
+  #onDeleteClick = () => {
+    this.#deleteClickHandler(this.#point);
+  };
+
   #onFormSubmit = (evt) => {
     evt.preventDefault();
     this.#point = this._state.point;
-    this.#formSubmitHandler({...this.#point});
+    this.#formSubmitHandler(this.#point);
   };
 
   #dateFromCloseHandler = ([userDate]) => {
@@ -151,7 +154,7 @@ export default class PointEditView extends AbstractStatefulView {
   _restoreHandlers = () => {
     this.element
       .querySelector('.event__reset-btn')
-      .addEventListener('click', this.#onResetClick);
+      .addEventListener('click', this.#onDeleteClick);
 
     this.element
       .querySelector('.event__rollup-btn')
@@ -167,7 +170,7 @@ export default class PointEditView extends AbstractStatefulView {
         .addEventListener('change', this.#onTypeChange));
 
     this.element
-      .querySelector('.event__input')
+      .querySelector('.event__input--destination')
       .addEventListener('change', this.#onDestinationChange);
 
     this.element
