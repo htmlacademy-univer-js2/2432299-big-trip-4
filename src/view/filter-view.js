@@ -1,17 +1,29 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-import { createFilterTemplate } from '../template/filter-template.js';
+import { createFiltersTemplate } from '../template/filter-template.js';
+
+import { upperFirst } from '../utils/utils.js';
 
 export default class FilterView extends AbstractView {
-  #filter = null;
+  #currentFilter = null;
+  #filterTypeHandler = null;
 
-  constructor(activeFilter) {
+  constructor(currentFilterType, filterTypeHandler) {
     super();
 
-    this.#filter = activeFilter;
+    this.#currentFilter = currentFilterType;
+    this.#filterTypeHandler = filterTypeHandler;
+    this.element.addEventListener('change', this.#onFilterTypeChange);
   }
 
-  get template() {
-    return createFilterTemplate(this.#filter);
+  get template(){
+    return createFiltersTemplate(this.#currentFilter);
   }
+
+  #onFilterTypeChange = (evt) => {
+    if (this.#currentFilter === upperFirst(evt.target.value)) {
+      return;
+    }
+    this.#filterTypeHandler(upperFirst(evt.target.value));
+  };
 }

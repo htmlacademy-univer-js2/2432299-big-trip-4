@@ -1,30 +1,30 @@
 import { PointType, CITIES } from '../const.js';
 
 const createPicturesTemplate = (pictures) => {
-  let result = '';
+  let template = '';
 
   if (pictures.length) {
-    pictures.forEach((picture) => (result += `<img class="event__photo" src=${picture.src} alt="Event photo">`));
+    pictures.forEach((picture) => (template += `<img class="event__photo" src=${picture.src} alt="Event photo">`));
 
     return `
     <div class="event__photos-container">
       <div class="event__photos-tape">
-        ${result}
+        ${template}
       </div>
     </div>
     `;
   }
 
-  return result;
+  return template;
 };
 
 const createEventTypeTemplate = () => {
-  let result = '';
+  let template = '';
 
   Object.values(PointType).forEach((type, index) => {
     const lowerCaseTypeName = type.toLowerCase();
 
-    result += `
+    template += `
       <div class="event__type-item">
         <input id="event-type-${lowerCaseTypeName}-${index + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
         <label label class="event__type-label  event__type-label--${lowerCaseTypeName}" for="event-type-${lowerCaseTypeName}-${index + 1}">${type}</label>
@@ -32,22 +32,24 @@ const createEventTypeTemplate = () => {
       `;
   });
 
-  return result;
+  return template;
 };
 
 const createDestinationList = () => {
-  let result = '';
+  let template = '';
 
-  CITIES.forEach((city) => (result += `<option value="${city.name}"></option>`));
+  CITIES.forEach((city) => {
+    template += `<option value="${city}"></option>`;
+  });
 
-  return result;
+  return template;
 };
 
 const createOffersTemplate = (offers) => {
-  let result = '';
+  let template = '';
 
-  offers.forEach((offer, index) => {
-    result += `<div class="event__offer-selector">
+  Object.values(offers).forEach((offer, index) => {
+    template += `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index + 1}" type="checkbox" name="event-offer-luggage" checked>
     <label class="event__offer-label" for="event-offer-luggage-${index + 1}">
       <span class="event__offer-title">${offer.title}</span>
@@ -57,7 +59,7 @@ const createOffersTemplate = (offers) => {
   </div>`;
   });
 
-  return result;
+  return template;
 };
 
 const createPointEditTemplate = (point, destination, offers) => `<li class="trip-events__item">
@@ -82,9 +84,9 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
         <label class="event__label  event__type-output" for="event-destination-1">
           ${point.type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination ? destination.name : ''}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationList(destination)}
+          ${createDestinationList()}
         </datalist>
       </div>
 
@@ -101,7 +103,7 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${point.basePrice}" ${point.basePrice}>
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${point.basePrice}" ${point.basePrice}>
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -121,8 +123,8 @@ const createPointEditTemplate = (point, destination, offers) => `<li class="trip
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destination.description}</p>
-        ${createPicturesTemplate(destination.pictures)}
+        <p class="event__destination-description">${destination ? destination.description : ''}</p>
+        ${createPicturesTemplate(destination ? destination.pictures : '')}
       </section>
     </section>
   </form>

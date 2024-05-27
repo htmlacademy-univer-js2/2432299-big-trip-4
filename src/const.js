@@ -75,7 +75,7 @@ export const EmptyPoint = {
   destination: null,
   isFavorite: false,
   offers: [],
-  type: 'flight'
+  type: 'Flight'
 };
 
 export const OFFERS_TITLE = [
@@ -90,7 +90,12 @@ export const MS_IN_DAY = 86400000;
 
 export const MS_IN_HOUR = 3600000;
 
-export const FILTERS = ['Everything', 'Future', 'Present', 'Past'];
+export const Filters = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST:   'Past'
+};
 
 export const Sorts = {
   DAY: 'Day',
@@ -109,5 +114,19 @@ export const FilterMessages = {
 
 export const Mode = {
   DEFAULT: 'default',
-  EDIT: 'edit'
+  EDIT: 'edit',
+  EMPTY_POINT: 'emptyPoint',
+  EMPTY_LIST: 'emptyList'
+};
+
+export const UpdateType = {
+  PATCH: 'Patch',
+  MINOR: 'Minor',
+  MAJOR: 'Major'
+};
+
+export const UserAction = {
+  UPDATE_POINT: 'update',
+  DELETE_POINT: 'delete',
+  CREATE_POINT: 'create'
 };

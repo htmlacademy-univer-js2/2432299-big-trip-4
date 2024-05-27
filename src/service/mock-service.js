@@ -50,4 +50,14 @@ export default class MockService {
 
     return generatePoints(type, destinations.id, offerIds);
   });
+
+  updatePoint(updatedPoint) {
+    return updatedPoint;
+  }
+
+  addPoint(point) {
+    return {...point};
+  }
+
+  deletePoint() {}
 }

@@ -1,6 +1,6 @@
 const createTripInfoTitle = (destinations) => destinations.map((d) => d.name).join(' &mdash; ');
 
-const getResultPrice = (points) => points.map((point) => point.basePrice).reduce((a, b) => a + b);
+const getResultPrice = (points) => points.map((point) => Number(point.basePrice)).reduce((a, b) => a + b);
 
 const createTripInfoTemplate = (destinations, points) => `
   <section class="trip-main__trip-info  trip-info">
