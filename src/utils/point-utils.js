@@ -1,6 +1,8 @@
 import { EmptyPoint } from '../const.js';
 import { getDuration } from './time-utils.js';
 
+import dayjs from 'dayjs';
+
 export const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
 export const isPointEmpty = (point) => {
@@ -19,10 +21,10 @@ export const isPointEmpty = (point) => {
 export const adaptToClient = (point) => {
   const adaptedPoint = {
     ...point,
-    basePrice: ['base_price'],
-    dateFrom: ['date_from'],
-    dateTo: ['date_to'],
-    isFavorite: ['is_favorite']
+    basePrice: point['base_price'],
+    dateFrom: point['date_from'],
+    dateTo: point['date_to'],
+    isFavorite: point['is_favorite']
   };
 
   delete adaptedPoint['base_price'];
@@ -36,10 +38,10 @@ export const adaptToClient = (point) => {
 export const adaptToServer = (point) => {
   const adaptedPoint = {
     ...point,
-    ['base_price']: point.basePrice,
-    ['date_from']: new Date(point.dateFrom).toISOString(),
-    ['date_to']: new Date(point.dateTo).toISOString(),
-    ['is_favorite']: point.isFavorite
+    basePrice: point['base_price'],
+    dateFrom: point['date_from'],
+    dateTo: point['date_to'],
+    isFavorite: point['is_favorite']
   };
 
   delete adaptedPoint.basePrice;
@@ -54,3 +56,33 @@ export const isBigDifference = (pointA, pointB) =>
   pointA.dateFrom !== pointB.dateFrom
   || pointA.basePrice !== pointB.basePrice
   || getDuration(pointA.dateFrom, pointA.dateTo) !== getDuration(pointB.dateFrom, pointB.dateTo);
+
+
+export const getEndPoint = (points) => {
+  let endPoint = points[0];
+  for(let i = 1; i < points.length; i++) {
+    const currentPointDate = points[i].endDate;
+    const endPointDate = endPoint.endDate;
+    if (dayjs(currentPointDate).diff(dayjs(endPointDate), 'M') > 0 ||
+      dayjs(currentPointDate).diff(dayjs(endPointDate), 'M') === 0 &&
+      dayjs(currentPointDate).diff(dayjs(endPointDate), 'D') > 0) {
+      endPoint = points[i];
+    }
+  }
+
+  return endPoint;
+};
+
+export const getStartPoint = (points) => {
+  let startPoint = points[0];
+  for(let i = 1; i < points.length; i++) {
+    const currentPointDate = points[i].startDate;
+    const endPointDate = startPoint.startDate;
+    if(dayjs(currentPointDate).diff(dayjs(endPointDate), 'M') < 0 ||
+      dayjs(currentPointDate).diff(dayjs(endPointDate), 'M') === 0 &&
+      dayjs(currentPointDate).diff(dayjs(endPointDate), 'D') < 0) {
+      startPoint = points[i];
+    }
+  }
+  return startPoint;
+};

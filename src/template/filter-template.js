@@ -17,11 +17,11 @@ const createFilterElements = (currentFilterType) => {
   return template;
 };
 
-const createFiltersTemplate = (currentFilterType) => (
-  `<form class="trip-filters" action="#" method="get">
+const createFiltersTemplate = (currentFilterType) => (`
+    <form class="trip-filters" action="#" method="get">
       ${createFilterElements(currentFilterType)}
       <button class="visually-hidden" type="submit">Accept filter</button>
-     </form>`
+    </form>`
 );
 
 export { createFiltersTemplate };
