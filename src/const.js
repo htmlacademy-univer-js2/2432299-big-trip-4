@@ -121,12 +121,27 @@ export const Mode = {
 
 export const UpdateType = {
   PATCH: 'Patch',
-  MINOR: 'Minor',
-  MAJOR: 'Major'
+  INIT: 'Init',
+  MAJOR: 'Major',
+  MINOR: 'Minor'
 };
 
 export const UserAction = {
   UPDATE_POINT: 'update',
   DELETE_POINT: 'delete',
   CREATE_POINT: 'create'
+};
+
+export const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+  POST: 'POST'
+};
+
+export const ENDPOINT = 'https://21.objects.htmlacademy.pro/big-trip';
+
+export const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
 };

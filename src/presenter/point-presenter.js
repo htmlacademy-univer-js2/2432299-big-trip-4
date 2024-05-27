@@ -7,7 +7,8 @@ import { Mode, UpdateType, UserAction } from '../const.js';
 
 import { render, replace, remove, RenderPosition } from '../framework/render.js';
 
-import { isEscapeKey, isPointEmpty, isBigDifference } from '../utils/utils.js';
+import { isEscapeKey } from '../utils/utils.js';
+import { isPointEmpty, isBigDifference } from '../utils/point-utils.js';
 
 export default class PointPresenter extends Observable {
   _mode = Mode.EMPTY_LIST;
@@ -38,6 +39,18 @@ export default class PointPresenter extends Observable {
 
     this.#dataChangeHandler = dataChangeHandler;
     this.#modeChangeHandler = modeChangeHandler;
+  }
+
+  setSaving() {
+
+  }
+
+  setDeleting() {
+
+  }
+
+  setAborting() {
+
   }
 
   #onKeyDown = (evt) => {
