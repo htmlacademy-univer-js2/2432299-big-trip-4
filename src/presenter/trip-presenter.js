@@ -2,6 +2,7 @@ import EventListView from '../view/event-list-view.js';
 import TripInfoView from '../view/trip-info-view.js';
 import EmptyListView from '../view/empty-list-view.js';
 import NewPointButtonView from '../view/new-point-button-view.js';
+import LoadingView from '../view/load-view';
 
 import PointPresenter from './point-presenter.js';
 import SortPresenter from './sort-presenter.js';
@@ -45,6 +46,9 @@ export default class TripPresenter {
 
   #currentSortType = Sorts.DAY;
   #pointPresenters = new Map();
+
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
 
   constructor(container, destinationsModel, offersModel, pointsModel, filterModel, sortModel) {
     this.#container = container;
@@ -140,12 +144,17 @@ export default class TripPresenter {
     this.#renderFilters();
     this.#renderNewPointButton();
 
-    if (this.points.length) {
+    if (this.points.length && !this.#isLoading) {
       this.#renderTripInfo();
       this.#renderSort();
       this.#renderEventList();
       this.#renderPoints();
 
+      return;
+    }
+
+    if(this.#isLoading) {
+      this.#renderLoading();
       return;
     }
 
@@ -166,6 +175,8 @@ export default class TripPresenter {
     remove(this.#tripInfoComponent);
     remove(this.#messageComponent);
     remove(this.#newPointButtonComponent);
+    remove(this.#loadingComponent);
+
     this.#filterPresenter.remove();
 
     if (this.#sortPresenter) {
@@ -176,6 +187,10 @@ export default class TripPresenter {
       this.#currentSortType = Sorts.DAY;
     }
   };
+
+  #renderLoading(){
+    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
+  }
 
   #onSortComponentClick = (sortType) => {
     this.#currentSortType = sortType;
@@ -236,6 +251,8 @@ export default class TripPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderBoard();
         break;
     }
