@@ -19,7 +19,7 @@ const getResultPrice = (points, offers) => {
     checkedOffers = point.offers;
     offersByType = offers.find((offer) => offer.type === point.type);
 
-    if (checkedOffers.length){
+    if (checkedOffers.length) {
       checkedOffers.forEach((checked) => {
         sum += offersByType.offers.find((offer) => offer.id === checked).price;
       });
