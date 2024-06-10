@@ -207,7 +207,7 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   get isSaving() {
-    return this._state.isDisabled;
+    return this._state.isSaving;
   }
 
   get isDeleting() {
