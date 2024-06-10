@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { DateFormat, MSCount } from '../const.js';
 
 dayjs.extend(duration);
-dayjs.extend(relativeTime);
 
 export const formatToLongDate = (dueDate) => dueDate ? dayjs(dueDate).format(DateFormat.LONG) : '';
 
