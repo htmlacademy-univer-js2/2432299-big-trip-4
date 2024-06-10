@@ -1,19 +1,12 @@
+import { getPointsPriceDifference } from './point-utils.js';
+import { getPointsDateDifference, getPointsDurationDifference } from './time-utils.js';
+
 import { Sorts } from '../const.js';
 
-import dayjs from 'dayjs';
-
-const getTimeDifference = (point) => dayjs(point.dateTo).diff(dayjs(point.dateFrom));
-
-const sortByDay = (pointA, pointB) => dayjs(pointB.dateTo).diff(dayjs(pointA.dateTo));
-
-const sortByTime = (pointA, pointB) => getTimeDifference(pointB) - getTimeDifference(pointA);
-
-const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
-
-export const sort = {
-  [Sorts.DAY]: (array) => array.sort(sortByDay),
-  [Sorts.TIME]: (array) => array.sort(sortByTime),
-  [Sorts.PRICE]: (array) => array.sort(sortByPrice)
+const sortMethod = {
+  [Sorts.DAY]: (points) => points.sort(getPointsDateDifference),
+  [Sorts.PRICE]: (points) => points.sort(getPointsPriceDifference),
+  [Sorts.TIME]: (points) => points.sort(getPointsDurationDifference),
 };
 
-export const isSortTypeAllowed = (type) => !(type === Sorts.EVENT || type === Sorts.OFFERS);
+export const sort = (points, sortType = Sorts.DAY) => sortMethod[sortType](points);
