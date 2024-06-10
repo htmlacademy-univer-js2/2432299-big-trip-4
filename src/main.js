@@ -1,34 +1,49 @@
-import TripInfoView from './view/trip-info-view.js';
-import FilterView from './view/filter-view.js';
-import BoardPresenter from './presenter/board-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import NewPointButtonPresenter from './presenter/new-point-button-presenter.js';
+import TripInfoPresenter from './presenter/trip-info-presenter.js';
+import TripPresenter from './presenter/trip-presenter.js';
 
-import MockService from './service/mock-service.js';
-import DestinationsModel from './model/destination-model.js';
-import OffersModel from './model/offer-model.js';
-import PointModel from './model/point-model.js';
+import PointService from './service/point-api-service.js';
 
-import { render, RenderPosition } from './render.js';
+import DestinationsModel from './model/destinations-model.js';
+import FilterModel from './model/filter-model.js';
+import OffersModel from './model/offers-model.js';
+import PointsModel from './model/points-model.js';
 
-const bodyElement = document.querySelector('body');
-const headerElement = bodyElement.querySelector('.page-header');
-const mainElement = bodyElement.querySelector('.page-main');
-const tripInfoElement = headerElement.querySelector('.trip-main');
-const filterElement = tripInfoElement.querySelector('.trip-controls__filters');
+import { ENDPOINT } from './const.js';
+
+const tripElement = document.querySelector('.trip-main');
+const mainElement = document.querySelector('.page-main');
 const eventListElement = mainElement.querySelector('.trip-events');
+const filtersElement = tripElement.querySelector('.trip-controls__filters');
 
-const mockService = new MockService();
-const destinationsModel = new DestinationsModel(mockService);
-const offersModel = new OffersModel(mockService);
-const pointModel = new PointModel(mockService);
+const Authorization = 'Basic uqSj0dgT47ZwDbY';
 
-const boardPresenter = new BoardPresenter(
+const service = new PointService(ENDPOINT, Authorization);
+
+const destinationsModel = new DestinationsModel(service);
+const offersModel = new OffersModel(service);
+const pointsModel = new PointsModel(service, destinationsModel, offersModel);
+const filterModel = new FilterModel();
+
+const tripInfoPresenter = new TripInfoPresenter(tripElement, pointsModel, destinationsModel, offersModel);
+
+const newPointButtonPresenter = new NewPointButtonPresenter(tripElement);
+
+const filterPresenter = new FilterPresenter(filtersElement, pointsModel, filterModel);
+
+const tripPresenter = new TripPresenter(
   eventListElement,
   destinationsModel,
   offersModel,
-  pointModel
+  pointsModel,
+  filterModel,
+  newPointButtonPresenter
 );
 
-render(new TripInfoView(destinationsModel, pointModel.get()), tripInfoElement, RenderPosition.AFTERBEGIN);
-render(new FilterView(), filterElement);
+newPointButtonPresenter.init(tripPresenter.handleNewPointClick);
 
-boardPresenter.init();
+filterPresenter.init();
+tripPresenter.init();
+pointsModel.init();
+tripInfoPresenter.init();

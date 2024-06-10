@@ -1,21 +1,24 @@
-const createFilterTemplate = () => `
+import { capitalize } from '../utils/common-utils.js';
+
+const createFilterTemplate = (filters) => `
   <form class="trip-filters" action="#" method="get">
-    <div class="trip-filters__filter">
-      <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything">
-      <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-    </div>
-    <div class="trip-filters__filter">
-      <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-      <label class="trip-filters__filter-label" for="filter-future">Future</label>
-    </div>
-    <div class="trip-filters__filter">
-      <input id="filter-present" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="present">
-      <label class="trip-filters__filter-label" for="filter-present">Present</label>
-    </div>
-    <div class="trip-filters__filter">
-      <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past" checked>
-      <label class="trip-filters__filter-label" for="filter-past">Past</label>
-    </div>
+    ${filters.map(({ type, isDisabled, isChecked }) => `
+      <div class="trip-filters__filter">
+        <input
+          id="filter-${type}"
+          class="trip-filters__filter-input  visually-hidden"
+          type="radio"
+          name="trip-filter"
+          value="${type}"
+          data-item="${type}"
+          ${isDisabled ? 'disabled' : ''}
+          ${isChecked ? 'checked' : ''}
+        >
+        <label class="trip-filters__filter-label" for="filter-${type}">
+          ${capitalize(type)}
+        </label>
+      </div>
+    `).join('')}
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>
   `;

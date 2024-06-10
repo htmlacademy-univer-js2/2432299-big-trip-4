@@ -1,87 +1,95 @@
-const CITIES = [
-  'Paris',
-  'Toronto',
-  'Leipzig',
-  'Moscow',
-  'Hongkong',
-  'Tokyo',
-  'Milan'
-];
-
-const DESCRIPTION = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Cras aliquet varius magna, non porta ligula feugiat eget.',
-  'Fusce tristique felis at fermentum pharetra.',
-  'Aliquam id orci ut lectus varius viverra.',
-  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
-  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
-  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
-  'Sed sed nisi sed augue convallis suscipit in sed felis.',
-  'Aliquam erat volutpat.',
-  'Nunc fermentum tortor ac porta dapibus.',
-  'In rutrum ac purus sit amet tempus.'
-];
-
-const Price = {
-  MIN: 1,
-  MAX: 1000
-};
-
-const Duration = {
-  HOUR: 5,
-  DAY: 5,
-  MIN: 59
-};
-
-const DateFormat = {
+export const DateFormat = {
   LONG: 'YYYY-MM-DDTHH:mm',
-  SHORT: 'MMM DD'
+  SHORT: 'MMM DD',
+  TIME: 'HH:mm'
 };
 
-const PicturesCount = {
-  MIN: 0,
-  MAX: 5
+export const Mode = {
+  DEFAULT: 'default',
+  EDITING: 'edit',
 };
 
-const CountOffers = {
-  MIN: 1,
-  MAX: 5
+export const Filters = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST: 'Past',
 };
 
-const POINT_TYPE = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-in',
-  'Sightseeing',
-  'Restaurant'
-];
+export const EmptyListMessage = {
+  [Filters.EVERYTHING]: 'Click New Event to create your first point',
+  [Filters.FUTURE]: 'There are no future events now',
+  [Filters.PRESENT]: 'There are no present events now',
+  [Filters.PAST]: 'There are no past events now'
+};
 
-const EMPTY_POINT = {
+export const Sorts = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
+};
+
+export const EnabledSorts = {
+  [Sorts.DAY]: true,
+  [Sorts.EVENT]: false,
+  [Sorts.TIME]: true,
+  [Sorts.PRICE]: true,
+  [Sorts.OFFERS]: false
+};
+
+export const ButtonLabel = {
+  CANCEL: 'Cancel',
+  DELETE: 'Delete',
+  SAVE: 'Save',
+  DELETE_IN_PROGRESS: 'Deleting...',
+  SAVE_IN_PROGRESS: 'Saving...'
+};
+
+export const EMPTY_POINT = {
   basePrice: 0,
   dateFrom: null,
   dateTo: null,
   destination: null,
   isFavorite: false,
   offers: [],
-  type: 'flight'
+  type: 'flight',
 };
 
-const OFFERS_TITLE = [
-  'Upgrade to a business class',
-  'Add luggage',
-  'Add meal',
-  'Choose seats',
-  'Travel by train'
-];
+export const UserAction = {
+  UPDATE_POINT: 'Update',
+  ADD_POINT: 'Add',
+  DELETE_POINT: 'Delete',
+};
 
-const POINT_COUNT = 3;
+export const FormType = {
+  EDITING: 'Edit',
+  CREATING: 'Create',
+};
 
-const MS_IN_DAY = 86400000;
+export const UpdateType = {
+  PATCH: 'Patch',
+  INIT: 'Init',
+  MAJOR: 'Major',
+  MINOR: 'Minor'
+};
 
-const MS_IN_HOUR = 3600000;
+export const Method = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
 
-export { CITIES, DESCRIPTION, EMPTY_POINT, OFFERS_TITLE, POINT_COUNT, POINT_TYPE, MS_IN_DAY, MS_IN_HOUR, Price, Duration, DateFormat, PicturesCount, CountOffers };
+export const ENDPOINT = 'https://21.objects.htmlacademy.pro/big-trip';
+
+export const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
+export const MSCount = {
+  MSEC_IN_HOUR: 3600000,
+  MSEC_IN_DAY: 86400000
+};

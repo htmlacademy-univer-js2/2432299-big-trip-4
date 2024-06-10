@@ -1,31 +1,22 @@
+import AbstractView from '../framework/view/abstract-view.js';
+
 import { createTripInfoTemplate } from '../template/trip-info-template.js';
-import { createElement } from '../render.js';
 
-export default class TripInfoView {
-  constructor(destinationsModel, points) {
-    this.points = points;
-    this.destinationsModel = destinationsModel;
+export default class TripInfoView extends AbstractView {
+  #route = null;
+  #dates = null;
+  #cost = null;
+  #isEmpty = true;
+
+  constructor(route, dates, cost, isEmpty) {
+    super();
+    this.#route = route;
+    this.#dates = dates;
+    this.#cost = cost;
+    this.#isEmpty = isEmpty;
   }
 
-  getTemplate = () => {
-    const destinations = [];
-
-    for (let i = 0; i < this.points.length; i++) {
-      destinations.push(this.destinationsModel.getById(this.points[i].destination));
-    }
-
-    return createTripInfoTemplate(destinations);
-  };
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createTripInfoTemplate(this.#route, this.#dates, this.#cost, this.#isEmpty,);
   }
 }
