@@ -1,23 +1,50 @@
-import { createPointTemplate } from '../template/point-template.js';
 import AbstractView from '../framework/view/abstract-view.js';
+
+import { createPointTemplate } from '../template/point-template.js';
 
 export default class PointView extends AbstractView {
   #point = null;
-  #pointDestination = null;
-  #pointOffers = null;
+  #destination = null;
+  #offers = null;
 
-  constructor(point, destination, offers, onRollupClick, onFavoriteCLick) {
+  #handleEditClick = null;
+  #handleFavoriteClick = null;
+
+  constructor({ point, destination, offers, onEditClick, onFavoriteClick }) {
     super();
-
     this.#point = point;
-    this.#pointDestination = destination;
-    this.#pointOffers = offers;
+    this.#destination = destination;
+    this.#offers = offers;
+    this.#handleEditClick = onEditClick;
+    this.#handleFavoriteClick = onFavoriteClick;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', onRollupClick);
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', onFavoriteCLick);
+    this.#addPointHandlers();
   }
 
   get template() {
-    return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
+    return createPointTemplate({
+      point: this.#point,
+      destination: this.#destination,
+      offers: this.#offers,
+    });
   }
+
+  #addPointHandlers = () => {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
+  };
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
+  };
 }

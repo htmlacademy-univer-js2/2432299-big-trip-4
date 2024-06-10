@@ -1,4 +1,4 @@
-import Observable from '../framework/observable';
+import Observable from '../framework/observable.js';
 
 import { Filters } from '../const.js';
 
