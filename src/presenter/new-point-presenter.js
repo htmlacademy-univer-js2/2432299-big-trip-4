@@ -16,13 +16,13 @@ export default class NewPointPresenter {
   #handleDataChange = null;
   #handleDestroy = null;
 
-  constructor({
+  constructor(
     container,
     destinationsModel,
     offersModel,
     onDataChange,
     onDestroy,
-  }) {
+  ) {
     this.#container = container;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
