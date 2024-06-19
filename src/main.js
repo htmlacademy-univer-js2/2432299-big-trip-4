@@ -17,7 +17,7 @@ const mainElement = document.querySelector('.page-main');
 const eventListElement = mainElement.querySelector('.trip-events');
 const filtersElement = tripElement.querySelector('.trip-controls__filters');
 
-const Authorization = 'Basic uqSj0dgT47ZwDbY';
+const Authorization = 'Basic uqSj0dgT7ZwDbY';
 
 const service = new PointService(ENDPOINT, Authorization);
 

@@ -27,11 +27,6 @@ export const getDuration = (dateFrom, dateTo) => {
   return dayjs.duration({ days, hours, minutes }).format('mm[M]');
 };
 
-export const isBigDifference = (pointA, pointB) =>
-  pointA.dateFrom !== pointB.dateFrom ||
-  pointA.basePrice !== pointB.basePrice ||
-  getDuration(pointA.dateFrom, pointA.dateTo) !== getDuration(pointB.dateFrom, pointB.dateTo);
-
 export const getPointsDateDifference = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 
 export const getPointsDurationDifference = (pointA, pointB) => {

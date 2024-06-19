@@ -155,9 +155,9 @@ export default class TripPresenter {
   };
 
   #renderEmptyList = () => {
-    this.#emptyListComponent = new EmptyListView({
-      filterType: this.#filterModel.get(),
-    });
+    this.#emptyListComponent = new EmptyListView(
+      this.#filterModel.get(),
+    );
     render(this.#emptyListComponent, this.#container);
   };
 
