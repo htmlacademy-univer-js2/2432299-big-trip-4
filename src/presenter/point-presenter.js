@@ -103,7 +103,7 @@ export default class PointPresenter {
     if (this.#mode === Mode.EDITING) {
       this.#editPointComponent.shake(this.#resetFormState);
     } else {
-      this.#editPointComponent.shake();
+      this.#pointComponent.shake();
     }
   };
 
