@@ -4,7 +4,6 @@ import PointView from '../view/point-view.js';
 import { remove, render, replace } from '../framework/render.js';
 
 import { isEscapeKey } from '../utils/common-utils.js';
-import { isBigDifference } from '../utils/time-utils.js';
 
 import { FormType, Mode, UpdateType, UserAction } from '../const.js';
 
@@ -167,10 +166,9 @@ export default class PointPresenter {
   };
 
   #handleEditPointSubmit = (point) => {
-    const isMinor = isBigDifference(point, this.#point);
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
-      isMinor ? UpdateType.MINOR : UpdateType.PATCH,
+      UpdateType.MINOR,
       point
     );
 
